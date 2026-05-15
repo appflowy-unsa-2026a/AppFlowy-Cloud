@@ -1,0 +1,48 @@
+<footer class="footer">
+  <div class="footer__inner container">
+    <div class="footer__col">
+      <div class="footer__brand">
+        <span class="navbar__logo" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 6.5C3 4.567 4.567 3 6.5 3H17.5C19.433 3 21 4.567 21 6.5V17.5C21 19.433 19.433 21 17.5 21H6.5C4.567 21 3 19.433 3 17.5V6.5Z" fill="url(#footer-grad)"/>
+            <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="footer-grad" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#9333EA"/>
+                <stop offset="1" stop-color="#6366F1"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        <span class="footer__brand-text">AppFlowy Cloud · IPS 2026-A</span>
+      </div>
+      <p class="footer__caption">
+        Trabajo final del curso de Ingeniería y Procesos de Software, semestre 2026-A,
+        sección B. Universidad Nacional de San Agustín de Arequipa.
+      </p>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">Proyecto</h4>
+      <ul class="footer__list">
+        <li><a href="{{ '/plan-proyecto/' | relative_url }}">Plan de proyecto</a></li>
+        <li><a href="{{ '/cronograma/' | relative_url }}">Cronograma</a></li>
+        <li><a href="{{ '/equipo/' | relative_url }}">Equipo</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__title">GitHub</h4>
+      <ul class="footer__list">
+        <li><a href="{{ site.fork_url }}" target="_blank" rel="noopener">Repositorio</a></li>
+        <li><a href="{{ site.project_url }}" target="_blank" rel="noopener">Tablero Scrum</a></li>
+        <li><a href="{{ site.issues_url }}" target="_blank" rel="noopener">Product Backlog</a></li>
+        <li><a href="{{ site.upstream_url }}" target="_blank" rel="noopener">Repositorio original ↗</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom container">
+    <span>© 2026 Equipo IPS-2026A · Sección B</span>
+    <span class="footer__sub">Documentación pública publicada con GitHub Pages</span>
+  </div>
+</footer>
