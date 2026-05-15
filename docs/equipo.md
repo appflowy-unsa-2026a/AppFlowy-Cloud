@@ -7,7 +7,6 @@ permalink: /equipo/
 
 **Curso:** Ingeniería y Procesos de Software (IPS) — 2026-A · Sección B
 **Universidad Nacional de San Agustín de Arequipa**
-**Departamento de Ingeniería de Sistemas e Informática**
 
 ## Integrantes
 
@@ -18,8 +17,11 @@ permalink: /equipo/
       <h3 class="member__name">Huaynacho Mango, Jerry Anderson</h3>
       <p class="member__role">Líder Sprint 0 · Sprint 4</p>
       <div class="member__links">
-        <a href="mailto:jhuaynacho@unsa.edu.pe">jhuaynacho@unsa.edu.pe</a>
-        <a href="https://github.com/JerryCode777" target="_blank" rel="noopener">@JerryCode777 ↗</a>
+        <a class="member__email" href="mailto:jhuaynacho@unsa.edu.pe">
+          <img class="member__email-icon" src="{{ '/assets/img/icono-unsa.png' | relative_url }}" alt="UNSA" width="16" height="20" loading="lazy">
+          <span>jhuaynacho@unsa.edu.pe</span>
+        </a>
+        <a class="member__github" href="https://github.com/JerryCode777" target="_blank" rel="noopener">@JerryCode777 ↗</a>
       </div>
     </div>
   </article>
@@ -30,8 +32,11 @@ permalink: /equipo/
       <h3 class="member__name">Mendoza Contreras, Giovani Angel</h3>
       <p class="member__role">Líder Sprint 1</p>
       <div class="member__links">
-        <a href="mailto:gmendozaco@unsa.edu.pe">gmendozaco@unsa.edu.pe</a>
-        <a href="https://github.com/giovani202320" target="_blank" rel="noopener">@giovani202320 ↗</a>
+        <a class="member__email" href="mailto:gmendozaco@unsa.edu.pe">
+          <img class="member__email-icon" src="{{ '/assets/img/icono-unsa.png' | relative_url }}" alt="UNSA" width="16" height="20" loading="lazy">
+          <span>gmendozaco@unsa.edu.pe</span>
+        </a>
+        <a class="member__github" href="https://github.com/giovani202320" target="_blank" rel="noopener">@giovani202320 ↗</a>
       </div>
     </div>
   </article>
@@ -42,8 +47,11 @@ permalink: /equipo/
       <h3 class="member__name">Ticona Saure, José María</h3>
       <p class="member__role">Líder Sprint 2</p>
       <div class="member__links">
-        <a href="mailto:jticonas@unsa.edu.pe">jticonas@unsa.edu.pe</a>
-        <a href="https://github.com/Joseticonasaure" target="_blank" rel="noopener">@Joseticonasaure ↗</a>
+        <a class="member__email" href="mailto:jticonas@unsa.edu.pe">
+          <img class="member__email-icon" src="{{ '/assets/img/icono-unsa.png' | relative_url }}" alt="UNSA" width="16" height="20" loading="lazy">
+          <span>jticonas@unsa.edu.pe</span>
+        </a>
+        <a class="member__github" href="https://github.com/Joseticonasaure" target="_blank" rel="noopener">@Joseticonasaure ↗</a>
       </div>
     </div>
   </article>
@@ -54,8 +62,11 @@ permalink: /equipo/
       <h3 class="member__name">Quispe Mamani, Gabriel</h3>
       <p class="member__role">Líder Sprint 3</p>
       <div class="member__links">
-        <a href="mailto:josquispem@unsa.edu.pe">josquispem@unsa.edu.pe</a>
-        <a href="https://github.com/J-Gabriel-Q-M" target="_blank" rel="noopener">@J-Gabriel-Q-M ↗</a>
+        <a class="member__email" href="mailto:josquispem@unsa.edu.pe">
+          <img class="member__email-icon" src="{{ '/assets/img/icono-unsa.png' | relative_url }}" alt="UNSA" width="16" height="20" loading="lazy">
+          <span>josquispem@unsa.edu.pe</span>
+        </a>
+        <a class="member__github" href="https://github.com/J-Gabriel-Q-M" target="_blank" rel="noopener">@J-Gabriel-Q-M ↗</a>
       </div>
     </div>
   </article>

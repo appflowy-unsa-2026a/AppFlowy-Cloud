@@ -621,6 +621,18 @@ a:hover { color: var(--brand-700); }
 .member__links { display: flex; flex-direction: column; gap: 4px; font-size: 0.88rem; color: var(--text-soft); }
 .member__links a { color: var(--text-soft); }
 .member__links a:hover { color: var(--brand-700); }
+.member__email {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.member__email-icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 3px;
+}
 
 /* ------------------------------------------------------------- 16. Callouts */
 .callout {
