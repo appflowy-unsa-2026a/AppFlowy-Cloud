@@ -66,7 +66,7 @@ permalink: /equipo/
           <img class="member__email-icon" src="{{ '/assets/img/icono-unsa.png' | relative_url }}" alt="UNSA" width="16" height="20" loading="lazy">
           <span>josquispem@unsa.edu.pe</span>
         </a>
-        <a class="member__github" href="https://github.com/J-Gabriel-Q-M" target="_blank" rel="noopener">@J-Gabriel-Q-M ↗</a>
+        <a class="member__github" href="https://github.com/J-Gabriel-Quispe-M" target="_blank" rel="noopener">@J-Gabriel-Quispe-M ↗</a>
       </div>
     </div>
   </article>
