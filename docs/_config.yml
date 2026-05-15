@@ -1,0 +1,72 @@
+title: AppFlowy Cloud — IPS 2026-A
+description: Proyecto académico de Scrum + DevOps aplicado a AppFlowy-Cloud. Curso de Ingeniería y Procesos de Software, UNSA.
+remote_theme: just-the-docs/just-the-docs@v0.10.0
+url: https://appflowy-unsa-2026a.github.io
+baseurl: /AppFlowy-Cloud
+
+color_scheme: dark
+
+search_enabled: true
+search:
+  heading_level: 3
+  previews: 2
+  preview_words_before: 3
+  preview_words_after: 3
+  tokenizer_separator: /[\s\-/]+/
+  rel_url: true
+  button: false
+
+heading_anchors: true
+
+aux_links:
+  "Fork":
+    - "https://github.com/appflowy-unsa-2026a/AppFlowy-Cloud"
+  "Project":
+    - "https://github.com/orgs/appflowy-unsa-2026a/projects/1"
+  "Issues":
+    - "https://github.com/appflowy-unsa-2026a/AppFlowy-Cloud/issues"
+
+aux_links_new_tab: true
+
+nav_external_links:
+  - title: Repositorio original (AppFlowy-IO)
+    url: https://github.com/AppFlowy-IO/AppFlowy-Cloud
+    hide_icon: false
+
+footer_content: "Universidad Nacional de San Agustín de Arequipa · Curso IPS 2026-A · Sección B"
+
+last_edit_timestamp: true
+last_edit_time_format: "%b %e %Y"
+
+gh_edit_link: true
+gh_edit_link_text: "Editar en GitHub"
+gh_edit_repository: "https://github.com/appflowy-unsa-2026a/AppFlowy-Cloud"
+gh_edit_branch: "main"
+gh_edit_source: docs
+gh_edit_view_mode: "tree"
+
+callouts_level: quiet
+callouts:
+  highlight:
+    color: yellow
+  important:
+    title: Importante
+    color: blue
+  new:
+    title: Nuevo
+    color: green
+  note:
+    title: Nota
+    color: purple
+  warning:
+    title: Atención
+    color: red
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-remote-theme
+
+exclude:
+  - vendor
+  - Gemfile
+  - Gemfile.lock
