@@ -35,5 +35,5 @@ Backend self-hosted del workspace colaborativo open source AppFlowy (alternativa
 
 ## Enlaces
 
-- [GitHub Project (tablero Scrum)](#) *(pendiente de vincular)*  
+- [GitHub Project (tablero Scrum)](https://github.com/orgs/appflowy-unsa-2026a/projects/1)  
 - [Issues / Product Backlog](https://github.com/appflowy-unsa-2026a/AppFlowy-Cloud/issues)  
