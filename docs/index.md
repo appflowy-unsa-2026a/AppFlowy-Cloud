@@ -7,6 +7,13 @@ permalink: /
 
 <section class="hero">
   <div class="hero__inner">
+    <img
+      class="hero__logo"
+      src="{{ '/assets/img/logo-unsa.png' | relative_url }}"
+      alt="Universidad Nacional de San Agustín de Arequipa"
+      width="320"
+      height="107"
+      loading="eager">
     <p class="eyebrow">
       <span class="eyebrow__pill">IPS 2026-A</span>
       <span>Curso de Ingeniería y Procesos de Software · Sección B</span>
