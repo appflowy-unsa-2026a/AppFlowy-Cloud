@@ -23,6 +23,7 @@ El proyecto se ejecuta en **cinco Sprints** distribuidos en tres hitos de evalua
     <h3 class="sprint__title">Sprint 0 — Planificación</h3>
     <div class="sprint__meta">
       <span class="badge badge--brand">Hasta 16.MAY.2026</span>
+      <span class="badge badge--green">✓ Cerrado</span>
       <span><strong>Líder:</strong> Jerry Anderson Huaynacho Mango</span>
     </div>
     <ul class="sprint__list">
@@ -41,6 +42,7 @@ El proyecto se ejecuta en **cinco Sprints** distribuidos en tres hitos de evalua
     <h3 class="sprint__title">Sprint 1 — Análisis y configuración DevOps inicial</h3>
     <div class="sprint__meta">
       <span class="badge badge--cyan">17.MAY – 27.MAY.2026</span>
+      <span class="badge badge--green">✓ Cerrado</span>
       <span><strong>Líder:</strong> Giovani Angel Mendoza Contreras</span>
     </div>
     <ul class="sprint__list">
@@ -58,6 +60,7 @@ El proyecto se ejecuta en **cinco Sprints** distribuidos en tres hitos de evalua
     <h3 class="sprint__title">Sprint 2 — CI/CD funcionando · Hito 2</h3>
     <div class="sprint__meta">
       <span class="badge badge--pink">28.MAY – 10.JUN.2026</span>
+      <span class="badge badge--green">✓ Cerrado</span>
       <span><strong>Líder:</strong> José María Ticona Saure</span>
     </div>
     <ul class="sprint__list">

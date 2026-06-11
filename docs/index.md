@@ -34,21 +34,61 @@ permalink: /
   <div class="container">
     <div class="stats">
       <div class="stat">
-        <div class="stat__value">4</div>
-        <div class="stat__label">Integrantes del equipo</div>
+        <div class="stat__value">5/6</div>
+        <div class="stat__label">Issues cerrados</div>
       </div>
       <div class="stat">
-        <div class="stat__value">5</div>
-        <div class="stat__label">Sprints planificados</div>
+        <div class="stat__value">11</div>
+        <div class="stat__label">Servicios Docker activos</div>
       </div>
       <div class="stat">
-        <div class="stat__value">3</div>
-        <div class="stat__label">Hitos de evaluación</div>
+        <div class="stat__value">5/5</div>
+        <div class="stat__label">Jobs CI exitosos</div>
       </div>
       <div class="stat">
-        <div class="stat__value">> 10K</div>
-        <div class="stat__label">LOC del producto base</div>
+        <div class="stat__value">2/5</div>
+        <div class="stat__label">Sprints completados</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="container">
+    <div class="section__head">
+      <span class="section__eyebrow">Hito 2 · Sprints 1 y 2</span>
+      <h2 class="section__title">Producto funcionando con CI/CD operativo</h2>
+      <p class="section__subtitle">
+        Al cierre del Hito 2 el equipo cuenta con el producto AppFlowy-Cloud levantado mediante Docker
+        Compose, un pipeline CI propio ejecutándose en cada push y los Sprints 1 y 2 documentados.
+      </p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card">
+        <div class="card__icon">🐳</div>
+        <h3 class="card__title">Entorno funcionando</h3>
+        <p class="card__body">
+          Once servicios orquestados con Docker Compose, diez de ellos saludables.
+          API REST, base de datos PostgreSQL, autenticación GoTrue y panel administrativo accesibles en localhost.
+        </p>
+      </article>
+      <article class="card">
+        <div class="card__icon">⚙️</div>
+        <h3 class="card__title">Pipeline CI propio</h3>
+        <p class="card__body">
+          Workflow <code>ci-equipo-ips.yml</code> con cinco jobs en paralelo:
+          validación de docs, docker-compose, YAML, seguridad y resumen.
+          <a href="{{ '/ci-cd/' | relative_url }}">Detalles del pipeline →</a>
+        </p>
+      </article>
+      <article class="card">
+        <div class="card__icon">📊</div>
+        <h3 class="card__title">Sprints documentados</h3>
+        <p class="card__body">
+          Sprints 0, 1 y 2 cerrados con retrospectivas, métricas de velocity
+          y burndown chart. <a href="{{ '/sprints/' | relative_url }}">Ver retrospectivas →</a>
+        </p>
+      </article>
     </div>
   </div>
 </section>

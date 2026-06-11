@@ -18,8 +18,14 @@ nav:
     url: /plan-proyecto/
   - title: Cronograma
     url: /cronograma/
+  - title: Sprints
+    url: /sprints/
+  - title: CI/CD
+    url: /ci-cd/
   - title: Equipo
     url: /equipo/
+
+actions_url: https://github.com/appflowy-unsa-2026a/AppFlowy-Cloud/actions
 
 plugins:
   - jekyll-seo-tag
