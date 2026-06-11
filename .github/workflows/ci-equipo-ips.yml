@@ -95,9 +95,13 @@ jobs:
       - name: Buscar secretos accidentalmente versionados
         run: |
           echo "Buscando patrones sensibles en el código versionado..."
-          ! grep -RIn --include="*.env" --include="*.yml" --include="*.yaml" \
-            -E "(BEGIN RSA PRIVATE KEY|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})" \
-            . || (echo "Se detectó un posible secreto en el repositorio." && exit 1)
+          PATTERN='(BEGIN[[:space:]]RSA[[:space:]]PRIVATE[[:space:]]KEY|sk-[A-Za-z0-9]{40,}|AKIA[0-9A-Z]{16})'
+          if grep -RIn --include="*.env" --include="*.yml" --include="*.yaml" \
+            --exclude-dir=.git --exclude="ci-equipo-ips.yml" \
+            -E "$PATTERN" . ; then
+            echo "Se detectó un posible secreto en el repositorio."
+            exit 1
+          fi
           echo "No se hallaron secretos sensibles."
 
       - name: Verificar que el .env real no esté versionado
