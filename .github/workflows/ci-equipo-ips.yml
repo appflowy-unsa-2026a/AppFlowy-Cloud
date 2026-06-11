@@ -1,0 +1,130 @@
+# =============================================================================
+# Pipeline CI del equipo IPS 2026-A — Sección B
+# Universidad Nacional de San Agustín de Arequipa
+#
+# Este workflow implementa la Integración Continua del proyecto académico
+# aplicado sobre AppFlowy-Cloud. Se ejecuta en cada push y pull request a la
+# rama principal, validando la integridad de la configuración, la
+# documentación pública y los archivos de infraestructura.
+# =============================================================================
+
+name: CI Equipo IPS 2026-A
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. Validación de la documentación (docs/ → GitHub Pages)
+  # ---------------------------------------------------------------------------
+  docs:
+    name: Validar documentación Markdown
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verificar estructura de docs/
+        run: |
+          echo "Comprobando presencia de archivos clave en docs/..."
+          test -f docs/index.md || (echo "Falta docs/index.md" && exit 1)
+          test -f docs/plan-proyecto.md || (echo "Falta docs/plan-proyecto.md" && exit 1)
+          test -f docs/cronograma.md || (echo "Falta docs/cronograma.md" && exit 1)
+          test -f docs/equipo.md || (echo "Falta docs/equipo.md" && exit 1)
+          echo "Todos los documentos clave están presentes."
+
+      - name: Contar páginas publicadas en GitHub Pages
+        run: |
+          count=$(find docs -name "*.md" | wc -l)
+          echo "Total de páginas Markdown publicadas: $count"
+
+  # ---------------------------------------------------------------------------
+  # 2. Validación de la configuración de despliegue (docker-compose.yml)
+  # ---------------------------------------------------------------------------
+  compose:
+    name: Validar docker-compose.yml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verificar sintaxis del docker-compose
+        run: |
+          cp deploy.env .env
+          docker compose config --quiet
+          echo "El archivo docker-compose.yml es válido."
+
+      - name: Listar servicios definidos
+        run: |
+          docker compose config --services | sort | tee services.txt
+          echo "Servicios totales: $(wc -l < services.txt)"
+
+  # ---------------------------------------------------------------------------
+  # 3. Validación de los workflows YAML del repositorio
+  # ---------------------------------------------------------------------------
+  workflows:
+    name: Validar workflows YAML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar yamllint
+        run: pip install yamllint
+
+      - name: Comprobar sintaxis de los workflows
+        run: |
+          yamllint -d "{extends: relaxed, rules: {line-length: disable}}" \
+            .github/workflows/ci-equipo-ips.yml
+          echo "Sintaxis YAML correcta."
+
+  # ---------------------------------------------------------------------------
+  # 4. Inspección de seguridad básica del repositorio
+  # ---------------------------------------------------------------------------
+  security:
+    name: Inspección de seguridad
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Buscar secretos accidentalmente versionados
+        run: |
+          echo "Buscando patrones sensibles en el código versionado..."
+          ! grep -RIn --include="*.env" --include="*.yml" --include="*.yaml" \
+            -E "(BEGIN RSA PRIVATE KEY|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})" \
+            . || (echo "Se detectó un posible secreto en el repositorio." && exit 1)
+          echo "No se hallaron secretos sensibles."
+
+      - name: Verificar que el .env real no esté versionado
+        run: |
+          if git ls-files | grep -E "^\.env$" >/dev/null; then
+            echo "El archivo .env no debe estar versionado."
+            exit 1
+          fi
+          echo ".env correctamente excluido del versionado."
+
+  # ---------------------------------------------------------------------------
+  # 5. Reporte final del pipeline
+  # ---------------------------------------------------------------------------
+  summary:
+    name: Resumen del pipeline
+    runs-on: ubuntu-latest
+    needs: [docs, compose, workflows, security]
+    if: always()
+    steps:
+      - name: Mostrar resumen
+        run: |
+          echo "==========================================================="
+          echo " Pipeline CI Equipo IPS 2026-A — Sección B"
+          echo " Universidad Nacional de San Agustín de Arequipa"
+          echo "==========================================================="
+          echo " Documentación   : ${{ needs.docs.result }}"
+          echo " Docker Compose  : ${{ needs.compose.result }}"
+          echo " Workflows YAML  : ${{ needs.workflows.result }}"
+          echo " Seguridad       : ${{ needs.security.result }}"
+          echo "==========================================================="
