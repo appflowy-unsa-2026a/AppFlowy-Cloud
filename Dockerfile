@@ -69,4 +69,12 @@ ARG PORT
 ENV PORT=${APPFLOWY_APPLICATION_PORT:-${PORT:-8000}}
 EXPOSE $PORT
 
+# Healthcheck del contenedor (mejora del equipo IPS 2026-A, Sprint 3):
+# la imagen publicada se autodiagnostica consultando el endpoint /api/health
+# del backend. Docker marca el contenedor como healthy/unhealthy sin depender
+# de la configuración externa de docker-compose, lo que hace el artefacto
+# desplegable observable por sí mismo en cualquier entorno de staging.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+  CMD curl --fail "http://127.0.0.1:${PORT}/api/health" || exit 1
+
 CMD ["appflowy_cloud"]
