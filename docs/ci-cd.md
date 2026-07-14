@@ -70,7 +70,7 @@ El pipeline ha ejecutado exitosamente desde su configuración. La última ejecuc
 | Run completo | [Ver en GitHub Actions](https://github.com/appflowy-unsa-2026a/AppFlowy-Cloud/actions/runs/27365922005) |
 
 {: .callout .callout--note }
-> El pipeline está pensado para evolucionar en los Sprints 3 y 4 incorporando *build* y *tests* del backend en Rust, generación y publicación de la imagen Docker en GitHub Container Registry, y despliegue automatizado al entorno de staging.
+> Durante el Hito 3 (Sprints 3 y 4) el pipeline evolucionó de CI a CD: se añadió un segundo workflow que construye y publica la imagen Docker del backend en GitHub Container Registry y la deja disponible para despliegue. Se documenta a continuación.
 
 ## Métricas DORA aplicadas
 
@@ -83,12 +83,53 @@ El equipo realiza seguimiento informal de las cuatro métricas DORA en el contex
 | Tasa de fallo de cambio | < 15 % | 1 falla en 5 runs por falso positivo (corregida) |
 | Tiempo medio de recuperación | < 2 horas | Corrección desplegada en 3 minutos |
 
-## Próximos pasos del pipeline
+## Pipeline de Entrega Continua (CD) — Hito 3
 
-Durante el Sprint 3 se ampliará el pipeline para incorporar:
+Durante el Sprint 3 el equipo implementó un segundo workflow, [`cd-equipo-ips.yml`](https://github.com/appflowy-unsa-2026a/AppFlowy-Cloud/blob/main/.github/workflows/cd-equipo-ips.yml), que lleva el proceso DevOps de la Integración Continua a la **Entrega Continua**. Se ejecuta en cada push a `main`, en cada tag `v*`, en pull requests (solo build, sin publicar) y de forma manual (`workflow_dispatch`).
 
-1. Compilación incremental del backend en Rust (`cargo build`).
-2. Ejecución de la suite de pruebas (`cargo test`).
-3. Análisis estático con `clippy` y formato con `rustfmt`.
-4. Construcción y publicación de la imagen Docker en GitHub Container Registry.
-5. Despliegue automatizado al entorno de staging mediante GitHub Pages o servicios equivalentes.
+### Etapas del pipeline CD
+
+#### 1. Puerta de calidad de código Rust
+
+Ejecuta `cargo fmt --all -- --check` sobre todo el workspace. Es una verificación rápida que no requiere compilar el proyecto y garantiza que el código respeta el formato definido en `rustfmt.toml` antes de invertir tiempo en la construcción de la imagen.
+
+#### 2. Construcción y publicación de la imagen Docker
+
+Reutiliza el `Dockerfile` del proyecto —basado en `cargo-chef` para cachear la compilación de Rust— y publica la imagen resultante en **GitHub Container Registry**:
+
+```
+ghcr.io/appflowy-unsa-2026a/appflowy-cloud:latest
+ghcr.io/appflowy-unsa-2026a/appflowy-cloud:sha-<commit>
+```
+
+Aspectos clave de esta etapa:
+
+- **Caché de capas** (`cache-from`/`cache-to: type=gha`): el primer build en modo *release* es costoso, pero los sucesivos reutilizan las capas compiladas y se completan en minutos.
+- **Etiquetado automático** con [`docker/metadata-action`](https://github.com/docker/metadata-action): `latest` para la rama principal, la versión semántica para los tags y el hash corto del commit para trazabilidad.
+- **Liberación de disco** del runner antes del build para acomodar los artefactos de compilación de Rust.
+- En pull requests la imagen se **construye pero no se publica**, validando que el `Dockerfile` sigue compilando sin exponer paquetes desde ramas no fusionadas.
+
+#### 3. Despliegue a staging
+
+Como el proyecto es académico y no dispone de un servidor propio, el **entorno de staging es la propia imagen publicada en GHCR**. La etapa emite las instrucciones de despliegue reproducibles:
+
+```bash
+docker pull ghcr.io/appflowy-unsa-2026a/appflowy-cloud:latest
+docker run -d -p 8000:8000 --env-file deploy.env \
+  ghcr.io/appflowy-unsa-2026a/appflowy-cloud:latest
+```
+
+Cualquier integrante del equipo o el docente puede desplegar el backend a partir de la imagen versionada, cerrando el ciclo CI/CD de extremo a extremo.
+
+### Mejora al producto: healthcheck de la imagen
+
+Como mejora concreta del Sprint 3, se incorporó una instrucción `HEALTHCHECK` en el `Dockerfile`. La imagen publicada se autodiagnostica consultando periódicamente el endpoint `/api/health` del backend, de modo que Docker la reporta como *healthy* o *unhealthy* en cualquier entorno —incluido un despliegue con `docker run` aislado— sin depender de la configuración externa de `docker-compose`. Es una mejora de observabilidad del artefacto desplegable, alineada con las prácticas DevOps del curso.
+
+### Métricas DORA al cierre del Hito 3
+
+| Métrica | Objetivo | Resultado al cierre del Hito 3 |
+|:---|:---|:---|
+| Frecuencia de despliegue | ≥ 1 por Sprint | Imagen publicada automáticamente en cada push a `main` |
+| Tiempo de entrega de cambios | < 24 horas | De push a imagen publicada en minutos (con caché tibia) |
+| Tasa de fallo de cambio | < 15 % | Puerta de formato + build en PR previenen fallos en `main` |
+| Tiempo medio de recuperación | < 2 horas | *Rollback* inmediato reetiquetando una imagen `sha-<commit>` previa |

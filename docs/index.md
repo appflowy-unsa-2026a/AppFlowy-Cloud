@@ -34,7 +34,7 @@ permalink: /
   <div class="container">
     <div class="stats">
       <div class="stat">
-        <div class="stat__value">5/6</div>
+        <div class="stat__value">9/9</div>
         <div class="stat__label">Issues cerrados</div>
       </div>
       <div class="stat">
@@ -42,11 +42,11 @@ permalink: /
         <div class="stat__label">Servicios Docker activos</div>
       </div>
       <div class="stat">
-        <div class="stat__value">5/5</div>
-        <div class="stat__label">Jobs CI exitosos</div>
+        <div class="stat__value">2</div>
+        <div class="stat__label">Pipelines CI + CD</div>
       </div>
       <div class="stat">
-        <div class="stat__value">2/5</div>
+        <div class="stat__value">5/5</div>
         <div class="stat__label">Sprints completados</div>
       </div>
     </div>
@@ -56,11 +56,12 @@ permalink: /
 <section class="section section--soft">
   <div class="container">
     <div class="section__head">
-      <span class="section__eyebrow">Hito 2 · Sprints 1 y 2</span>
-      <h2 class="section__title">Producto funcionando con CI/CD operativo</h2>
+      <span class="section__eyebrow">Hito 3 · Proyecto completo</span>
+      <h2 class="section__title">Ciclo CI/CD completo y cuatro Sprints cerrados</h2>
       <p class="section__subtitle">
-        Al cierre del Hito 2 el equipo cuenta con el producto AppFlowy-Cloud levantado mediante Docker
-        Compose, un pipeline CI propio ejecutándose en cada push y los Sprints 1 y 2 documentados.
+        Al cierre del Hito 3 el equipo cuenta con el producto AppFlowy-Cloud levantado con Docker
+        Compose, dos pipelines propios —CI y CD— que construyen y publican la imagen del backend en
+        GitHub Container Registry, y los cuatro Sprints documentados con su artículo IEEE final.
       </p>
     </div>
     <div class="grid grid--3">
@@ -74,19 +75,20 @@ permalink: /
       </article>
       <article class="card">
         <div class="card__icon">⚙️</div>
-        <h3 class="card__title">Pipeline CI propio</h3>
+        <h3 class="card__title">Pipelines CI y CD propios</h3>
         <p class="card__body">
-          Workflow <code>ci-equipo-ips.yml</code> con cinco jobs en paralelo:
-          validación de docs, docker-compose, YAML, seguridad y resumen.
+          <code>ci-equipo-ips.yml</code> valida el repositorio en cada push;
+          <code>cd-equipo-ips.yml</code> construye y publica la imagen Docker del
+          backend en GitHub Container Registry.
           <a href="{{ '/ci-cd/' | relative_url }}">Detalles del pipeline →</a>
         </p>
       </article>
       <article class="card">
         <div class="card__icon">📊</div>
-        <h3 class="card__title">Sprints documentados</h3>
+        <h3 class="card__title">Cuatro Sprints documentados</h3>
         <p class="card__body">
-          Sprints 0, 1 y 2 cerrados con retrospectivas, métricas de velocity
-          y burndown chart. <a href="{{ '/sprints/' | relative_url }}">Ver retrospectivas →</a>
+          Sprints 0 a 4 cerrados con retrospectivas, métricas de velocity
+          y burndown charts. <a href="{{ '/sprints/' | relative_url }}">Ver retrospectivas →</a>
         </p>
       </article>
     </div>

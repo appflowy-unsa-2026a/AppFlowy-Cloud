@@ -101,22 +101,68 @@ Esta página recoge el estado de cada Sprint del proyecto a medida que avanza, c
 
 ---
 
-## Sprint 3 — Mejoras y refactorización
+## Sprint 3 — Mejoras y despliegue continuo (CD) · Hito 3
 {: .d-inline-block }
 
-Pendiente
-{: .badge .badge--gray }
+✓ Cerrado
+{: .badge .badge--green }
 
-**Período previsto:** 11.JUN – 26.JUN.2026
+**Período:** 11.JUN – 26.JUN.2026
 **Líder:** Quispe Mamani, José Gabriel
+
+### Trabajo realizado
+
+- Implementación del pipeline de **Entrega Continua** propio del equipo en el workflow [`cd-equipo-ips.yml`](https://github.com/appflowy-unsa-2026a/AppFlowy-Cloud/blob/main/.github/workflows/cd-equipo-ips.yml), que extiende el proceso DevOps de CI hacia CD.
+- Puerta de calidad de código con `cargo fmt --check` (rustfmt) como primera etapa del pipeline.
+- **Construcción y publicación automatizada** de la imagen Docker del backend en **GitHub Container Registry** (`ghcr.io/appflowy-unsa-2026a/appflowy-cloud`) en cada push a `main`.
+- Estrategia de **caché de capas** (`type=gha`) y liberación de disco del runner para acelerar los builds sucesivos.
+- **Mejora al producto:** incorporación de un `HEALTHCHECK` en el `Dockerfile`. La imagen publicada se autodiagnostica consultando el endpoint `/api/health`, de modo que Docker la marca como *healthy/unhealthy* en cualquier entorno de despliegue sin depender de la configuración externa de `docker-compose`.
+
+### Indicadores Scrum
+
+| Métrica | Valor |
+|:---|:---|
+| Issues cerrados | 2 de 2 planificados |
+| Story points completados | 16 de 16 |
+| Velocity del Sprint | 16 puntos |
+
+### Lecciones aprendidas
+
+- Reutilizar el `Dockerfile` existente como motor del build de CD evitó duplicar la lógica de compilación y garantizó que el artefacto publicado sea idéntico al validado localmente.
+- La caché de capas es determinante: el primer build en release es costoso, pero los sucesivos se reducen drásticamente, habilitando una frecuencia de despliegue por Sprint.
 
 ---
 
-## Sprint 4 — Cierre y artículo IEEE
+## Sprint 4 — Cierre, documentación técnica y artículo IEEE · Hito 3
 {: .d-inline-block }
 
-Pendiente
-{: .badge .badge--gray }
+✓ Cerrado
+{: .badge .badge--green }
 
-**Período previsto:** 27.JUN – 13.JUL.2026
+**Período:** 27.JUN – 13.JUL.2026
 **Líder:** Huaynacho Mango, Jerry Anderson
+
+### Trabajo realizado
+
+- **Despliegue del artefacto a staging:** la imagen publicada en GHCR queda disponible para despliegue mediante `docker pull` / `docker run`, cerrando el ciclo CI/CD de extremo a extremo.
+- Consolidación de la **documentación técnica** completa del proceso ágil Scrum integrado a DevOps en el sitio público del proyecto.
+- Generación del **burndown chart** consolidado de los Sprints 3 y 4.
+- Redacción del **Informe del Hito 3** y del **artículo en formato IEEE** del trabajo final.
+- Cierre del Product Backlog: la última historia de usuario ([DOC] artículo IEEE) queda cerrada.
+
+### Indicadores Scrum
+
+| Métrica | Valor |
+|:---|:---|
+| Issues cerrados | 2 de 2 planificados |
+| Story points completados | 14 de 14 |
+| Velocity del Sprint | 14 puntos |
+
+### Burndown de Sprints 3 y 4
+
+[Ver gráfico burndown en el informe Hito 3]
+
+### Lecciones aprendidas
+
+- Documentar en paralelo a la ejecución —y no al final— redujo el esfuerzo de redacción del informe y del artículo IEEE en el cierre del proyecto.
+- Enmarcar la automatización DevOps (pipeline CD, caché, observabilidad del contenedor) como la mejora principal del producto resultó coherente con el objetivo del curso: el proceso de desarrollo es, en sí mismo, el entregable de mayor valor.
