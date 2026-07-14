@@ -1,0 +1,162 @@
+# =============================================================================
+# Pipeline CD del equipo IPS 2026-A — Sección B
+# Universidad Nacional de San Agustín de Arequipa
+#
+# Este workflow implementa la Entrega Continua (Continuous Delivery) del
+# proyecto académico sobre AppFlowy-Cloud. Complementa al pipeline de
+# Integración Continua (ci-equipo-ips.yml) llevando el proceso DevOps hasta
+# la publicación automatizada de un artefacto desplegable: la imagen Docker
+# del backend, versionada y publicada en GitHub Container Registry (GHCR).
+#
+# Etapas:
+#   1. Calidad de código Rust   — formato (rustfmt) como puerta rápida.
+#   2. Construcción y publicación — build de la imagen Docker y push a GHCR.
+#   3. Despliegue a staging       — la imagen queda disponible para pull;
+#                                   se emite el resumen de despliegue.
+#
+# Sin necesidad de un servidor propio: el "entorno de staging" es la imagen
+# publicada en GHCR, que cualquier integrante o el docente puede desplegar
+# con `docker run` o `docker compose` a partir de la etiqueta generada.
+# =============================================================================
+
+name: CD Equipo IPS 2026-A
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. Puerta de calidad: formato del código Rust (rustfmt)
+  # ---------------------------------------------------------------------------
+  rust-format:
+    name: Verificar formato del código Rust
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar toolchain de Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+
+      - name: Comprobar formato con rustfmt
+        run: |
+          echo "Verificando el formato del código con la configuración del proyecto..."
+          cargo fmt --all -- --check
+          echo "El código respeta el formato definido en rustfmt.toml."
+
+  # ---------------------------------------------------------------------------
+  # 2. Construcción y publicación de la imagen Docker en GHCR
+  # ---------------------------------------------------------------------------
+  build-and-push:
+    name: Construir y publicar imagen Docker
+    runs-on: ubuntu-latest
+    needs: rust-format
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Liberar espacio en el runner
+        run: |
+          echo "Espacio disponible antes de la limpieza:"
+          df -h /
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" || true
+          echo "Espacio disponible después de la limpieza:"
+          df -h /
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Autenticarse en GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Calcular metadatos y etiquetas de la imagen
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=sha,format=short
+
+      - name: Construir y publicar la imagen
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          # En pull requests solo se construye (no se publica) para validar
+          # que el Dockerfile compila; en push a main/tags sí se publica.
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            PROFILE=release
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ---------------------------------------------------------------------------
+  # 3. Despliegue a staging (imagen publicada en GHCR)
+  # ---------------------------------------------------------------------------
+  deploy-staging:
+    name: Desplegar a staging
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Registrar el despliegue del artefacto
+        run: |
+          IMAGE="${REGISTRY}/${IMAGE_NAME}"
+          IMAGE_LC=$(echo "$IMAGE" | tr '[:upper:]' '[:lower:]')
+          echo "==========================================================="
+          echo " Despliegue a staging — Equipo IPS 2026-A"
+          echo "==========================================================="
+          echo " Imagen publicada : ${IMAGE_LC}:latest"
+          echo " Etiqueta por SHA : ${IMAGE_LC}:sha-$(echo ${GITHUB_SHA} | cut -c1-7)"
+          echo " Commit           : ${GITHUB_SHA}"
+          echo "-----------------------------------------------------------"
+          echo " Para desplegar el backend en cualquier entorno:"
+          echo "   docker pull ${IMAGE_LC}:latest"
+          echo "   docker run -d -p 8000:8000 --env-file deploy.env ${IMAGE_LC}:latest"
+          echo "==========================================================="
+
+  # ---------------------------------------------------------------------------
+  # 4. Resumen del pipeline CD
+  # ---------------------------------------------------------------------------
+  summary:
+    name: Resumen del pipeline CD
+    runs-on: ubuntu-latest
+    needs: [rust-format, build-and-push, deploy-staging]
+    if: always()
+    steps:
+      - name: Mostrar resumen
+        run: |
+          echo "==========================================================="
+          echo " Pipeline CD Equipo IPS 2026-A — Sección B"
+          echo " Universidad Nacional de San Agustín de Arequipa"
+          echo "==========================================================="
+          echo " Formato Rust        : ${{ needs.rust-format.result }}"
+          echo " Build + push imagen : ${{ needs.build-and-push.result }}"
+          echo " Despliegue staging  : ${{ needs.deploy-staging.result }}"
+          echo "==========================================================="
